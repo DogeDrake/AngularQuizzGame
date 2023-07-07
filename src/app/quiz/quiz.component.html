@@ -1,0 +1,17 @@
+<div *ngIf="currentQuestion">
+  <h2>{{ currentQuestion.questionText }}</h2>
+  <ul>
+    <li *ngFor="let answer of currentQuestion.answers" [class.selected]="selectedAnswer === answer"
+      [class.correct]="isAnswered && isCorrect && selectedAnswer === answer"
+      [class.incorrect]="isAnswered && !isCorrect && selectedAnswer === answer" (click)="selectAnswer(answer)">
+      {{ answer.answerText }}
+    </li>
+  </ul>
+  <button *ngIf="selectedAnswer && !isAnswered" (click)="checkAnswer()">Submit</button>
+  <div *ngIf="isAnswered && isCorrect" class="correct-feedback">
+    Correct answer!
+  </div>
+  <div *ngIf="isAnswered && !isCorrect" class="incorrect-feedback">
+    Incorrect answer. The correct answer is "{{ getCorrectAnswerText() }}".
+  </div>
+</div>

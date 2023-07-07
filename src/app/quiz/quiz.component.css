@@ -1,0 +1,25 @@
+li {
+  cursor: pointer;
+}
+
+li.selected {
+  background-color: lightblue;
+}
+
+li.correct {
+  background-color: lightgreen;
+}
+
+li.incorrect {
+  background-color: tomato;
+}
+
+.correct-feedback {
+  color: green;
+  font-weight: bold;
+}
+
+.incorrect-feedback {
+  color: red;
+  font-weight: bold;
+}

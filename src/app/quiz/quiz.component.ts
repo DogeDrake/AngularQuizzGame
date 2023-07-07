@@ -22,13 +22,19 @@ export class QuizComponent implements OnInit {
   getNextQuestion(): void {
     this.http
       .get('http://localhost:8081/api/quizzes/questions/1/details')
-      .subscribe((data: any) => {
-        this.quizData = data;
-        this.currentQuestion = this.quizData.question;
-        this.selectedAnswer = null;
-        this.isAnswered = false;
-        this.isCorrect = false;
-      });
+      .subscribe(
+        (data: any) => {
+          console.log('API Response:', data);
+          this.quizData = data;
+          this.currentQuestion = this.quizData.question;
+          this.selectedAnswer = null;
+          this.isAnswered = false;
+          this.isCorrect = false;
+        },
+        (error: any) => {
+          console.error('API Error:', error);
+        }
+      );
   }
 
   selectAnswer(answer: any): void {

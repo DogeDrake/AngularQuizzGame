@@ -23,3 +23,11 @@ li.incorrect {
   color: red;
   font-weight: bold;
 }
+
+.correct-answer {
+  background-color: #c2e5b1;
+}
+
+.incorrect-answer {
+  background-color: #ffa8a8;
+}

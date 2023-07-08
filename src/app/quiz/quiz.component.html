@@ -3,7 +3,8 @@
   <ul>
     <li *ngFor="let answer of quizData.answers" [class.selected]="selectedAnswer === answer"
       [class.correct]="isAnswered && isCorrect && selectedAnswer === answer"
-      [class.incorrect]="isAnswered && !isCorrect && selectedAnswer === answer" (click)="selectAnswer(answer)">
+      [class.incorrect]="isAnswerIncorrect(answer) || (isAnswered && !isCorrect && correctAnswer === answer)"
+      (click)="selectAnswer(answer)">
       {{ answer.answerText }}
     </li>
   </ul>
@@ -12,6 +13,7 @@
     Correct answer!
   </div>
   <div *ngIf="isAnswered && !isCorrect" class="incorrect-feedback">
-    Incorrect answer. The correct answer is "{{ getCorrectAnswerText() }}".
+    Incorrect answer. The correct answer is "{{ correctAnswer?.answerText }}".
   </div>
+  <button *ngIf="isAnswered" (click)="submitQuestion()">Next Question</button>
 </div>

@@ -12,6 +12,7 @@ export class QuizComponent implements OnInit {
   selectedAnswer: any;
   isAnswered: boolean = false;
   isCorrect: boolean = false;
+  correctAnswer: any;
 
   constructor(private http: HttpClient) {}
 
@@ -20,21 +21,35 @@ export class QuizComponent implements OnInit {
   }
 
   getNextQuestion(): void {
-    this.http
-      .get('http://localhost:8081/api/quizzes/questions/1/details')
-      .subscribe(
-        (data: any) => {
-          console.log('API Response:', data);
-          this.quizData = data;
-          this.currentQuestion = this.quizData.question;
-          this.selectedAnswer = null;
-          this.isAnswered = false;
-          this.isCorrect = false;
-        },
-        (error: any) => {
-          console.error('API Error:', error);
-        }
-      );
+    const randomQuestionId = this.getRandomQuestionId();
+    const apiUrl = `http://localhost:8081/api/quizzes/questions/${randomQuestionId}/details`;
+    this.http.get(apiUrl).subscribe(
+      (data: any) => {
+        console.log('API Response:', data);
+        this.quizData = data;
+        this.currentQuestion = this.quizData.question;
+        this.selectedAnswer = null;
+        this.isAnswered = false;
+        this.isCorrect = false;
+        this.correctAnswer = this.getCorrectAnswer();
+        this.shuffleAnswers();
+      },
+      (error: any) => {
+        console.error('API Error:', error);
+      }
+    );
+  }
+
+  shuffleAnswers(): void {
+    const shuffledAnswers = [...this.quizData.answers];
+    for (let i = shuffledAnswers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledAnswers[i], shuffledAnswers[j]] = [
+        shuffledAnswers[j],
+        shuffledAnswers[i],
+      ];
+    }
+    this.quizData.answers = shuffledAnswers;
   }
 
   selectAnswer(answer: any): void {
@@ -47,19 +62,29 @@ export class QuizComponent implements OnInit {
     if (this.selectedAnswer) {
       this.isAnswered = true;
       this.isCorrect = this.selectedAnswer.isCorrect;
-      if (this.isCorrect) {
-        this.selectedAnswer = null;
-        setTimeout(() => {
-          this.getNextQuestion();
-        }, 5000);
-      }
     }
   }
 
-  getCorrectAnswerText(): string {
-    const correctAnswer = this.currentQuestion.answers.find(
-      (answer: any) => answer.isCorrect
-    );
-    return correctAnswer ? correctAnswer.answerText : '';
+  getCorrectAnswer(): any {
+    if (this.currentQuestion && this.currentQuestion.answers) {
+      return this.currentQuestion.answers.find(
+        (answer: any) => answer.isCorrect
+      );
+    }
+    return null;
+  }
+  getRandomQuestionId(): number {
+    const min = 1; // Mínimo ID de pregunta
+    const max = 19; // Máximo ID de pregunta (ajusta según tus necesidades)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  submitQuestion(): void {
+    this.selectedAnswer = null;
+    this.getNextQuestion();
+  }
+
+  isAnswerIncorrect(answer: any): boolean {
+    return this.isAnswered && !this.isCorrect && this.selectedAnswer === answer;
   }
 }

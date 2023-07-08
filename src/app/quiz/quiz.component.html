@@ -1,19 +1,25 @@
-<div *ngIf="currentQuestion">
-  <h2>{{ currentQuestion.questionText }}</h2>
-  <ul>
+<div *ngIf="currentQuestion" class="quiz-container">
+  <h2 class="question-text">{{ currentQuestion.questionText }}</h2>
+  <div class="timer">Time remaining: {{ timeRemaining }}s</div>
+  <div class="score">Score: {{ score }}</div>
+  <ul class="answers-list">
     <li *ngFor="let answer of quizData.answers" [class.selected]="selectedAnswer === answer"
-      [class.correct]="isAnswered && isCorrect && selectedAnswer === answer"
-      [class.incorrect]="isAnswerIncorrect(answer) || (isAnswered && !isCorrect && correctAnswer === answer)"
+      [class.correct]="isAnswered && selectedAnswer === answer && selectedAnswer.isCorrect"
+      [class.incorrect]="isAnswered && selectedAnswer === answer && !selectedAnswer.isCorrect"
       (click)="selectAnswer(answer)">
       {{ answer.answerText }}
+      <span *ngIf="isAnswered && selectedAnswer === answer && selectedAnswer.isCorrect"
+        class="feedback-icon correct-icon">✓</span>
+      <span *ngIf="isAnswered && selectedAnswer === answer && !selectedAnswer.isCorrect"
+        class="feedback-icon incorrect-icon">✗</span>
     </li>
   </ul>
-  <button *ngIf="selectedAnswer && !isAnswered" (click)="checkAnswer()">Submit</button>
-  <div *ngIf="isAnswered && isCorrect" class="correct-feedback">
+  <button *ngIf="selectedAnswer && !isAnswered" class="submit-button" (click)="checkAnswer()">Submit</button>
+  <div *ngIf="isAnswered && isCorrect" class="feedback correct-feedback">
     Correct answer!
   </div>
-  <div *ngIf="isAnswered && !isCorrect" class="incorrect-feedback">
+  <div *ngIf="isAnswered && !isCorrect" class="feedback incorrect-feedback">
     Incorrect answer. The correct answer is "{{ correctAnswer?.answerText }}".
   </div>
-  <button *ngIf="isAnswered" (click)="submitQuestion()">Next Question</button>
+  <button *ngIf="isAnswered" class="next-question-button" (click)="submitQuestion()">Next Question</button>
 </div>

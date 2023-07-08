@@ -31,3 +31,107 @@ li.incorrect {
 .incorrect-answer {
   background-color: #ffa8a8;
 }
+
+.quiz-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.question-text {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.answers-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.answers-list li {
+  font-size: 18px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.answers-list li.selected {
+  background-color: #eaf6ff;
+}
+
+.answers-list li.correct {
+  background-color: #c3e6c9;
+}
+
+.answers-list li.incorrect {
+  background-color: #f8d7da;
+}
+
+
+
+.submit-button,
+.next-question-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover,
+.next-question-button:hover {
+  background-color: #0056b3;
+}
+
+.feedback {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.correct-feedback {
+  color: green;
+}
+
+.correct-answer {
+  /* Agregamos estilos para mostrar el marcador de respuesta correcta en verde */
+  color: green;
+}
+
+.incorrect-feedback {
+  color: red;
+}
+
+.feedback-icon {
+  margin-left: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.correct-icon {
+  color: green;
+}
+
+.incorrect-icon {
+  color: red;
+}
+
+.timer {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.score {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/* Resto del código CSS previo */

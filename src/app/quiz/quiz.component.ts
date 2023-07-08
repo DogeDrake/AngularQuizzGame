@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-quiz',
@@ -16,8 +17,36 @@ export class QuizComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
+  private countdownSubscription: Subscription | undefined;
+  private countdownSeconds: number = 20;
+  public timeRemaining: number = this.countdownSeconds;
+  public score: number = 0;
+
   ngOnInit(): void {
+    this.startCountdown();
     this.getNextQuestion();
+  }
+
+  ngOnDestroy(): void {
+    this.stopCountdown();
+  }
+
+  startCountdown(): void {
+    this.countdownSubscription = interval(1000).subscribe(() => {
+      this.timeRemaining--;
+      if (this.timeRemaining === 0) {
+        this.stopCountdown();
+        this.isAnswered = true;
+        this.isCorrect = false;
+        this.selectedAnswer = null;
+      }
+    });
+  }
+
+  stopCountdown(): void {
+    if (this.countdownSubscription) {
+      this.countdownSubscription.unsubscribe();
+    }
   }
 
   getNextQuestion(): void {
@@ -60,9 +89,20 @@ export class QuizComponent implements OnInit {
 
   checkAnswer(): void {
     if (this.selectedAnswer) {
+      this.stopCountdown();
       this.isAnswered = true;
       this.isCorrect = this.selectedAnswer.isCorrect;
+      if (this.isCorrect) {
+        this.score += this.timeRemaining;
+      }
     }
+  }
+
+  submitQuestion(): void {
+    this.selectedAnswer = null;
+    this.getNextQuestion();
+    this.timeRemaining = this.countdownSeconds;
+    this.startCountdown();
   }
 
   getCorrectAnswer(): any {
@@ -77,11 +117,6 @@ export class QuizComponent implements OnInit {
     const min = 1; // Mínimo ID de pregunta
     const max = 19; // Máximo ID de pregunta (ajusta según tus necesidades)
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  submitQuestion(): void {
-    this.selectedAnswer = null;
-    this.getNextQuestion();
   }
 
   isAnswerIncorrect(answer: any): boolean {

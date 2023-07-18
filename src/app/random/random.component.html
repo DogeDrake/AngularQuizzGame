@@ -1,0 +1,10 @@
+<div class="roulette-container">
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <div class="arrow"></div>
+</div>
+
+<button (click)="startSpinning()" [disabled]="spinning">Girar la Ruleta</button>
+
+<div class="result-text" *ngIf="winnerSelected">
+  El Tema elegido es: {{ selectedQuiz?.quizName }}
+</div>

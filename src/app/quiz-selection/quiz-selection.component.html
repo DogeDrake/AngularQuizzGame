@@ -1,0 +1,10 @@
+<div class="container">
+  <h2>Selecciona un tipo de Quiz:</h2>
+
+  <button *ngFor="let quiz of quizzes" (click)="selectQuiz(quiz.quizId)">
+    {{ quiz.quizName }}
+  </button>
+
+  <button (click)="redirectToRandom()">Random</button>
+  <button (click)="navigateToQuiz()">Todas</button>
+</div>

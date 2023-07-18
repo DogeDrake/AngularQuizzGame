@@ -1,0 +1,32 @@
+<div class="quiz-container" *ngIf="!isQuizFinished">
+  <h2>Pregunta {{ questionCounter }} de {{ totalQuestions }}</h2>
+  <p class="question-text">{{ currentQuestion.question.questionText }}</p>
+  <div class="answers-list">
+    <label *ngFor="let answer of currentQuestion.answers"
+      [ngClass]="{'selected': currentQuestion.selectedAnswer === answer.answerId, 'correct': isAnswerSubmitted && answer.isCorrect, 'incorrect': isAnswerSubmitted && !answer.isCorrect}">
+      <input type="radio" name="answer" [value]="answer.answerId" [(ngModel)]="currentQuestion.selectedAnswer"
+        [disabled]="isAnswerSubmitted" />
+      {{ answer.answerText }}
+    </label>
+  </div>
+  <button class="submit-button" (click)="submitAnswer()" [disabled]="isAnswerSubmitted">Enviar respuesta</button>
+  <div *ngIf="isAnswerSubmitted" class="feedback">
+    <p *ngIf="isAnswerCorrect" class="correct-feedback"><span
+        class="feedback-icon correct-icon">&#10003;</span>Respuesta correcta</p>
+    <p *ngIf="!isAnswerCorrect" class="incorrect-feedback"><span
+        class="feedback-icon incorrect-icon">&#10007;</span>Respuesta incorrecta</p>
+    <button class="next-question-button" (click)="nextQuestion()">Siguiente pregunta</button>
+  </div>
+  <div class="timer">
+    Tiempo restante: {{ timeRemaining }} segundos
+  </div>
+  <div class="score">
+    Puntos: {{ score }}
+  </div>
+</div>
+
+<div *ngIf="isQuizFinished" class="quiz-container">
+  <h2>Has terminado el cuestionario</h2>
+  <p>Tu puntuación final es: {{ score }}</p>
+  <button (click)="restartQuiz()">Volver al menú principal</button>
+</div>

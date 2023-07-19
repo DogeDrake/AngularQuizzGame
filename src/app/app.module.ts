@@ -10,6 +10,7 @@ import { RandomComponent } from './random/random.component';
 import { TemaElegidoComponent } from './tema-elegido/tema-elegido.component';
 import { FormsModule } from '@angular/forms';
 import { WordSectionComponent } from './word-section/word-section.component';
+import { MainMenuComponent } from './main-menu/main-menu.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { WordSectionComponent } from './word-section/word-section.component';
     RandomComponent,
     TemaElegidoComponent,
     WordSectionComponent,
+    MainMenuComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
   providers: [],

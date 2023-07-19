@@ -41,28 +41,23 @@ export class TemaElegidoComponent implements OnInit, OnDestroy {
       .get<any[]>(
         `http://localhost:8081/api/quizzes/quizzes/${this.quizId}/questions`
       )
-      .subscribe((questions) => {
-        this.questions = questions;
+      .subscribe((response) => {
+        this.questions = response.map((item: any) => {
+          const question = item;
+          question.answers = this.shuffleAnswers(item.answers);
+          return question;
+        });
+        this.totalQuestions = this.questions.length;
+        this.shuffleQuestions();
         this.currentQuestionIndex = 0;
         this.currentQuestion = this.questions[this.currentQuestionIndex];
         this.isQuizFinished = false;
         this.isAnswerSubmitted = false;
         this.isAnswerCorrect = false;
-        this.totalQuestions = this.questions.length;
         this.score = 0;
         this.questionCounter = 1;
         this.startCountdown();
       });
-  }
-
-  startCountdown() {
-    this.countdownSubscription = interval(1000).subscribe(() => {
-      this.timeRemaining--;
-      if (this.timeRemaining === 0) {
-        this.stopCountdown();
-        this.submitAnswer();
-      }
-    });
   }
 
   stopCountdown() {
@@ -71,21 +66,56 @@ export class TemaElegidoComponent implements OnInit, OnDestroy {
     }
   }
 
+  shuffleQuestions() {
+    for (let i = this.questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.questions[i], this.questions[j]] = [
+        this.questions[j],
+        this.questions[i],
+      ];
+    }
+  }
+
+  shuffleAnswers(answers: any[]) {
+    const shuffledAnswers = [...answers];
+    for (let i = shuffledAnswers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledAnswers[i], shuffledAnswers[j]] = [
+        shuffledAnswers[j],
+        shuffledAnswers[i],
+      ];
+    }
+    return shuffledAnswers;
+  }
+
   selectAnswer(answerId: number) {
     this.currentQuestion.selectedAnswer = answerId;
   }
 
   submitAnswer() {
     this.stopCountdown();
-    const isCorrect =
-      this.currentQuestion.selectedAnswer ===
-      this.currentQuestion.question.correctAnswerId;
-    this.currentQuestion.isCorrect = isCorrect;
+    const selectedAnswer = this.currentQuestion.answers.find(
+      (answer: any) => answer.answerId === this.currentQuestion.selectedAnswer
+    );
+    const isCorrect = selectedAnswer.isCorrect;
+    this.currentQuestion.isCorrect = isCorrect || this.timeRemaining === 0;
     this.isAnswerSubmitted = true;
     this.isAnswerCorrect = isCorrect;
     if (isCorrect) {
       this.score += this.timeRemaining;
     }
+  }
+
+  startCountdown() {
+    this.countdownSubscription = interval(1000).subscribe(() => {
+      this.timeRemaining--;
+      if (this.timeRemaining === 0) {
+        this.stopCountdown();
+        this.isAnswerSubmitted = true;
+        this.isAnswerCorrect = false;
+        this.currentQuestion.selectedAnswer = null;
+      }
+    });
   }
 
   nextQuestion() {

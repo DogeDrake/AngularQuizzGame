@@ -115,7 +115,7 @@ export class QuizComponent implements OnInit {
   }
   getRandomQuestionId(): number {
     const min = 1; // Mínimo ID de pregunta
-    const max = 19; // Máximo ID de pregunta (ajusta según tus necesidades)
+    const max = 59; // Máximo ID de pregunta (ajusta según tus necesidades)
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 

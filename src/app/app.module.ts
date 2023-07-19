@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { RandomComponent } from './random/random.component';
 import { TemaElegidoComponent } from './tema-elegido/tema-elegido.component';
 import { FormsModule } from '@angular/forms';
+import { WordSectionComponent } from './word-section/word-section.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
     QuizSelectionComponent,
     RandomComponent,
     TemaElegidoComponent,
+    WordSectionComponent,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
   providers: [],

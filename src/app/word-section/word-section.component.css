@@ -1,0 +1,77 @@
+.game-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.word-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.word-container div {
+  width: 50px;
+  height: 50px;
+  background-color: #ccc;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 24px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2,
+h3 {
+  color: #333;
+}
+
+.input-container {
+  margin-top: 20px;
+}
+
+input {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.result-message {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.game-over {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Estilos para las diferentes clases de palabras */
+.guess-correct {
+  background-color: #28a745;
+}
+
+.guess-incorrect {
+  background-color: #dc3545;
+}
+
+.guess-skipped {
+  background-color: #ffc107;
+}
+
+.word-used {
+  background-color: #999;
+}

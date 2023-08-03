@@ -1,1 +1,26 @@
-<p>word-section works!</p>
+<div class="game-container" *ngIf="!isGameOver">
+  <h2>Guess the Word</h2>
+  <div class="word-container" *ngFor="let word of words; let i = index">
+    <div [ngClass]="{
+          'word-used': word.used,
+          'guess-correct': word.used && guessStatus[i] === 'correct',
+          'guess-incorrect': word.used && guessStatus[i] === 'incorrect',
+          'guess-skipped': word.used && guessStatus[i] === 'skipped'
+        }">
+      {{ word.palabra.substr(0, 3) }}
+    </div>
+  </div>
+  <h3>Definition:</h3>
+  <p>{{ selectedDefinition }}</p>
+  <div class="input-container">
+    <input type="text" [(ngModel)]="userAnswer" placeholder="Enter your answer">
+    <button (click)="checkAnswer(userAnswer)">Check</button>
+    <button (click)="skipWord()">Skip</button>
+  </div>
+  <p class="result-message">{{ resultMessage }}</p>
+</div>
+<div class="game-over" *ngIf="isGameOver">
+  <h2>Game Over</h2>
+  <p>Congratulations! You completed the game.</p>
+  <p>You guessed {{ correctCount }} out of 5 words correctly.</p>
+</div>
